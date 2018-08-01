@@ -5,8 +5,7 @@ set -o
 set -o pipefail
 
 GIT_REPO=$1
-KNOWN_HOSTS=$2
-TARGET_NAMESPACE=$3
+TARGET_NAMESPACE=$2
 TMP_FOLDER=/tmp-repo
 
 echo Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
