@@ -8,9 +8,15 @@ GIT_REPO=$1
 TARGET_NAMESPACE=$2
 TMP_FOLDER=/tmp-repo
 
+echo Ensure namespace ${TARGET_NAMESPACE} is present
+
+kubectl get namespace ${TARGET_NAMESPACE} || kubectl create namespace ${TARGET_NAMESPACE}
+
+
 echo Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
 
 git clone --quiet --depth=1 ${GIT_REPO} ${TMP_FOLDER}
+
 
 echo Applying \"${GIT_REPO}\" against \"${TARGET_NAMESPACE}\"
 

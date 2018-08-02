@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: deploy
+  labels:
+    name: deploy
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    name: deploy
+  name: deploy
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    name: deploy
+  name: deploy
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: ""
+subjects:
+  - kind: ServiceAccount
+    name: deploy
+    namespace: deploy
+
+---
+apiVersion: v1
+kind: Secret
+data:
+  known_hosts: cat ~/.ssh/known_hosts | base64
+  id_rsa: cat ~/.ssh/id_rsa | base64
+metadata:
+  name: deploy-git
+type: Opaque

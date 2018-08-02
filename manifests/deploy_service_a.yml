@@ -1,0 +1,26 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: deploy-git
+            secret:
+              secretName: deploy-git
+              defaultMode: 0400
+          containers:
+          - name: apply
+            image: elmariofredo/relax:v0.1
+            volumeMounts:
+            - name: deploy-git
+              mountPath: /root/.ssh
+              readOnly: true
+            args:
+            - git@git.whatever.net:deploy/environments/alfa/service_a.git
+            - service_a
+          restartPolicy: OnFailure
+          serviceAccount: deploy
