@@ -14,7 +14,7 @@ spec:
               defaultMode: 0400
           containers:
           - name: apply
-            image: elmariofredo/relax:v0.1
+            image: elmariofredo/relax:v0.2
             volumeMounts:
             - name: deploy-git
               mountPath: /root/.ssh
