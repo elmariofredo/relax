@@ -20,8 +20,6 @@ then
 
     echo Ensure namespace ${TARGET_NAMESPACE} is present
 
-    kubectl get namespace ${TARGET_NAMESPACE} || kubectl create namespace ${TARGET_NAMESPACE}
-
     KUBE_ATTRS="--namespace=${TARGET_NAMESPACE}"
 
 fi
