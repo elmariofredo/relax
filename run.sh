@@ -14,6 +14,7 @@ TARGET_NAMESPACE=$2
 
 TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
+INTERVAL_SECONDS=180
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
@@ -36,6 +37,6 @@ do
 
     kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
 
-    sleep 60
+    sleep $INTERVAL_SECONDS
 
 done
