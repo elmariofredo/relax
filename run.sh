@@ -5,9 +5,7 @@
 # ./run.sh git@git.example.com:deploy/namespaces/service_a.git service_a
 #
 
-set -e
 set -o
-set -o pipefail
 
 GIT_REPO=$1
 TARGET_NAMESPACE=$2
