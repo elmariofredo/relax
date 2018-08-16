@@ -18,17 +18,24 @@ KUBE_ATTRS=""
 if [ -n "${TARGET_NAMESPACE}" ]
 then
 
-    echo Ensure namespace ${TARGET_NAMESPACE} is present
+    echo Ensure namespace ${TARGET_NAMESPACE} execution context
 
     KUBE_ATTRS="--namespace=${TARGET_NAMESPACE}"
 
 fi
 
-echo Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
+while true
+do
 
-git clone --quiet --depth=1 ${GIT_REPO} ${TMP_FOLDER}
+    echo Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
+
+    git clone --quiet --depth=1 ${GIT_REPO} ${TMP_FOLDER}
 
 
-echo Applying \"${GIT_REPO}\" against \"${TARGET_NAMESPACE}\"
+    echo Applying \"${GIT_REPO}\" against \"${TARGET_NAMESPACE}\"
 
-kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
+    kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
+
+    sleep 60
+
+done
