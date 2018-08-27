@@ -7,7 +7,6 @@ K8s simplified Gitops based CD
 
 ## How does it work
 
-1. Create k8s [Cron Job](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) ( see [./manifests](./manifests) )
-2. Cron Job run every e.g. 5 minutes
-3. Executes simple bash script with specified git and namespace ( see [./run.sh](./run.sh) ) 
-4. Bash script will ensure namespace is present, then shallow clone git repo and run kubectl apply on selected namespace
+1. Create k8s Deployment ( see [./manifests](./manifests) )
+2. Runs pod with simple loop in [./run.sh](./run.sh)
+4. Bash script will clone git repo and run kubectl apply on selected namespace
