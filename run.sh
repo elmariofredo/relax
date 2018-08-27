@@ -28,7 +28,7 @@ fi
 while true
 do
 
-    echo Pullin git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
+    echo Pulling git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
 
     cd ${TMP_FOLDER} && git pull --update-shallow
 
