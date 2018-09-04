@@ -5,7 +5,7 @@
 # ./run.sh git@git.example.com:deploy/namespaces/service_a.git service_a
 #
 
-set -o
+set -euo pipefail
 
 GIT_REPO=$1
 TARGET_NAMESPACE=$2
@@ -14,7 +14,7 @@ TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
-git clone --quiet --depth=1 ${GIT_REPO} ${TMP_FOLDER}
+git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
@@ -30,7 +30,7 @@ do
 
     echo Pulling git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
 
-    cd ${TMP_FOLDER} && git pull --update-shallow
+    cd ${TMP_FOLDER} && git pull --verbose --update-shallow
 
     echo Applying \"${GIT_REPO}\" against \"${TARGET_NAMESPACE}\"
 
