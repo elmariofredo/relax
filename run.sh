@@ -5,7 +5,7 @@
 # ./run.sh git@git.example.com:deploy/namespaces/service_a.git service_a
 #
 
-set -euo pipefail
+set -eo pipefail
 
 GIT_REPO=$1
 TARGET_NAMESPACE=$2
@@ -39,3 +39,6 @@ do
     sleep $INTERVAL_SECONDS
 
 done
+
+sleep $INTERVAL_SECONDS
+
