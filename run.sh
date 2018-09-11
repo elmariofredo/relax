@@ -14,6 +14,7 @@ TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
+echo Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\"
 git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}
 
 if [ -n "${TARGET_NAMESPACE}" ]
