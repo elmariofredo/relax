@@ -12,14 +12,17 @@ TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
-echo "[$(date)] Cloning git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\""
+function log {
+echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"
+}
+
+log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
 git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
 
-    echo "[$(date)] Ensure namespace ${TARGET_NAMESPACE} execution context"
-
+    log "Ensure namespace ${TARGET_NAMESPACE} execution context"
     KUBE_ATTRS="--namespace=${TARGET_NAMESPACE}"
 
 fi
@@ -27,17 +30,13 @@ fi
 while true
 do
 
-    echo "[$(date)] Pulling git repo \"${GIT_REPO}\" to \"${TMP_FOLDER}\""
-
+    log "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
     cd ${TMP_FOLDER} && git pull --verbose --update-shallow
 
-    echo "[$(date)] Applying \"${GIT_REPO}\" repo against \"${TARGET_NAMESPACE}\" namespace"
-
+    log "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
     kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
 
+    log "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
 
 done
-
-sleep $INTERVAL_SECONDS
-
