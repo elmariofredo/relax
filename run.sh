@@ -13,7 +13,7 @@ KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
 function log {
-echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"
+echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
 }
 
 log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
