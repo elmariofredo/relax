@@ -17,13 +17,9 @@ function log {
 echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
 }
 
-function fill_output {
-	OUTPUT=$(paste -s -d '|' out.log)
-}
-
 log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}
-fill_output && log "${OUTPUT}"
+OUTPUT=$(git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER} 2>&1 | tr '\n' '|')
+log "${OUTPUT}"
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
@@ -37,12 +33,12 @@ while true
 do
 
     log "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-    cd ${TMP_FOLDER} && git pull --verbose --update-shallow
-    fill_output && log "${OUTPUT}"
+    cd ${TMP_FOLDER} && OUTPUT=$(git pull --verbose --update-shallow 2>&1 | tr '\n' '|')
+    log "${OUTPUT}"
 
     log "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-    kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
-    fill_output && log "${OUTPUT}"
+    OUTPUT=$(kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER} 2>&1 | tr '\n' '|')
+    log "${OUTPUT}"
     
     log "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
