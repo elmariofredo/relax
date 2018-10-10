@@ -11,13 +11,19 @@ TARGET_NAMESPACE=$2
 TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
 INTERVAL_SECONDS=180
+OUTPUT=""
 
 function log {
 echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
 }
 
+function fill_output {
+	OUTPUT=$(paste -s -d '|' out.log)
+}
+
 log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
 git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}
+fill_output && log "${OUTPUT}"
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
@@ -32,10 +38,12 @@ do
 
     log "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
     cd ${TMP_FOLDER} && git pull --verbose --update-shallow
+    fill_output && log "${OUTPUT}"
 
     log "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
     kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}
-
+    fill_output && log "${OUTPUT}"
+    
     log "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
 
