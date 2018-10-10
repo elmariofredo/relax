@@ -11,15 +11,13 @@ TARGET_NAMESPACE=$2
 TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
 INTERVAL_SECONDS=180
-OUTPUT=""
 
 function log {
 echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
 }
 
 log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-OUTPUT=$(git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER} 2>&1 | tr '\n' '|')
-log "${OUTPUT}"
+log "$(git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER} 2>&1 | tr '\n' '|')"
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
@@ -33,12 +31,10 @@ while true
 do
 
     log "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-    cd ${TMP_FOLDER} && OUTPUT=$(git pull --verbose --update-shallow 2>&1 | tr '\n' '|')
-    log "${OUTPUT}"
+    cd ${TMP_FOLDER} && log "$(git pull --verbose --update-shallow 2>&1 | tr '\n' '|')"
 
     log "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-    OUTPUT=$(kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER} 2>&1 | tr '\n' '|')
-    log "${OUTPUT}"
+    log "$(kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER} 2>&1 | tr '\n' '|')"
     
     log "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
