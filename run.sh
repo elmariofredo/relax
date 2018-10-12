@@ -16,13 +16,19 @@ function log {
 echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
 }
 
-log "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-log "$(git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER} 2>&1 | tr '\n' '|')"
+function exec_log {
+        OUTPUT=$(${1} 2>&1)
+        EXIT=$?
+        log "$EXIT" "$(echo $OUTPUT | tr '\n' '|')"
+}
+
+log "0" "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
+exec_log "git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}"
 
 if [ -n "${TARGET_NAMESPACE}" ]
 then
 
-    log "Ensure namespace ${TARGET_NAMESPACE} execution context"
+    log "0" "Ensure namespace ${TARGET_NAMESPACE} execution context"
     KUBE_ATTRS="--namespace=${TARGET_NAMESPACE}"
 
 fi
@@ -30,13 +36,13 @@ fi
 while true
 do
 
-    log "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-    cd ${TMP_FOLDER} && log "$(git pull --verbose --update-shallow 2>&1 | tr '\n' '|')"
+    log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
+    cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
 
-    log "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-    log "$(kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER} 2>&1 | tr '\n' '|')"
+    log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
+    exec_log "kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}"
     
-    log "Sleep for ${INTERVAL_SECONDS} seconds"
+    log "0" "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
 
 done
