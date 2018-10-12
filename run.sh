@@ -13,13 +13,13 @@ KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
 function log {
-echo "{\"@timestamp\": \"$(date)\", \"exit_code\": \"${1}\", \"message\": \"${2}\"}"
+echo "{\"@timestamp\": \"$(date)\", \"exit_code\": \"${1}\", \"message\": \"${2}\", \"cmd\": \"${3}\"}"
 }
 
 function exec_log {
         OUTPUT=$(${1} 2>&1)
         EXIT=$?
-        log "$EXIT" "$(echo $OUTPUT | tr '\n' '|')"
+        log "$EXIT" "$(echo $OUTPUT | tr '\n' '|')" "${1}"
 }
 
 log "0" "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
