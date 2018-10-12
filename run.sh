@@ -13,7 +13,7 @@ KUBE_ATTRS=""
 INTERVAL_SECONDS=180
 
 function log {
-echo "{\"@timestamp\": \"$(date)\", \"message\": \"${1}\"}"
+echo "{\"@timestamp\": \"$(date)\", \"exit_code\": \"${1}\", \"message\": \"${2}\"}"
 }
 
 function exec_log {
