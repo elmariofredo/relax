@@ -40,7 +40,7 @@ do
     cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
 
     log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-    exec_log "kubectl apply ${KUBE_ATTRS} --filename=${TMP_FOLDER}"
+    exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}"
     
     log "0" "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
