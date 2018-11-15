@@ -1,10 +1,9 @@
 FROM alpine:3.8
 
-RUN apk add --no-cache git openssh curl
+RUN apk add --no-cache git openssh
 
-RUN curl -L https://storage.googleapis.com/kubernetes-release/release/v1.11.1/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && \
-    chmod +x /usr/local/bin/kubectl
-
+ADD https://storage.googleapis.com/kubernetes-release/release/v1.11.1/bin/linux/amd64/kubectl /usr/local/bin/kubectl
+RUN chmod +x /usr/local/bin/kubectl
 
 ADD run.sh /
 

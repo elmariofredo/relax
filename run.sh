@@ -22,9 +22,6 @@ function exec_log {
         log "$EXIT" "$(echo $OUTPUT | tr '\n' '|')" "${1}"
 }
 
-log "0" "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-exec_log "git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}"
-
 if [ -n "${TARGET_NAMESPACE}" ]
 then
 
@@ -36,12 +33,25 @@ fi
 while true
 do
 
-    log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-    cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
+    if [ ! -d "$TMP_FOLDER" ]
+    then
 
-    log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-    exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}"
-    
+        log "0" "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
+        exec_log "git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}"
+
+    fi
+
+    if [ ! -z "$(ls -A ${TMP_FOLDER})" ]
+    then
+
+        log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
+        cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
+
+        log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
+        exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}"
+
+    fi
+
     log "0" "Sleep for ${INTERVAL_SECONDS} seconds"
     sleep $INTERVAL_SECONDS
 
