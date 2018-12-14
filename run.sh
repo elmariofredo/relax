@@ -7,6 +7,7 @@
 
 GIT_REPO=$1
 TARGET_NAMESPACE=$2
+GIT_BRANCH=${3-master}
 
 TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
@@ -37,7 +38,7 @@ do
     then
 
         log "0" "Cloning git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-        exec_log "git clone --verbose --depth=1 ${GIT_REPO} ${TMP_FOLDER}"
+        exec_log "git clone --verbose  --single-branch --branch ${GIT_BRANCH} ${GIT_REPO} ${TMP_FOLDER}"
 
     fi
 
