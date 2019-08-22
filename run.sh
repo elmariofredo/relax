@@ -43,11 +43,16 @@ do
 
     fi
 
-    if [ ! -z "$(ls -A ${TMP_FOLDER}/${GIT_FOLDER})" ]
+    if [ ! -z "$(ls -A ${TMP_FOLDER})" ]
     then
-
         log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
         cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
+
+    fi
+
+    FILES_COUNT=$(find  ${TMP_FOLDER}/${GIT_FOLDER} |egrep  -c ".yaml|.yml|.json")
+    if [[ ${FILES_COUNT} -ne 0 ]]
+    then
 
         log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
         exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
