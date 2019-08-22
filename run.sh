@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Example usage
@@ -8,6 +8,7 @@
 GIT_REPO=$1
 TARGET_NAMESPACE=$2
 GIT_BRANCH=${3-master}
+GIT_FOLDER=${4}
 
 TMP_FOLDER=/tmp-repo
 KUBE_ATTRS=""
@@ -42,14 +43,14 @@ do
 
     fi
 
-    if [ ! -z "$(ls -A ${TMP_FOLDER})" ]
+    if [ ! -z "$(ls -A ${TMP_FOLDER}/${GIT_FOLDER})" ]
     then
 
         log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
         cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
 
         log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace"
-        exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}"
+        exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
 
     fi
 
