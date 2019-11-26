@@ -21,7 +21,7 @@ echo "{\"@timestamp\": \"$(date)\", \"exit_code\": \"${1}\", \"message\": \"${2}
 function exec_log {
         OUTPUT=$(${1} 2>&1)
         EXIT=$?
-        log "$EXIT" "$(echo $OUTPUT | tr '\n' '|'| sed 's/"/\"/g')" "${1}"
+        log "$EXIT" "$(echo $OUTPUT | tr '\n' '|'| sed 's/"/\\"/g')" "${1}"
 }
 
 if [ -n "${TARGET_NAMESPACE}" ]
