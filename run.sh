@@ -45,8 +45,9 @@ do
 
     if [ ! -z "$(ls -A ${TMP_FOLDER})" ]
     then
-        log "0" "Pulling git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
-        cd ${TMP_FOLDER} && exec_log "git pull --verbose --update-shallow"
+        log "0" "Fetch and reset git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
+        cd ${TMP_FOLDER} && exec_log "git fetch --verbose"
+        cd ${TMP_FOLDER} && exec_log "git reset --hard origin/${GIT_REPO}"
 
     else
 
