@@ -47,7 +47,7 @@ do
     then
         log "0" "Fetch and reset git repo '${GIT_REPO}' to '${TMP_FOLDER}'"
         cd ${TMP_FOLDER} && exec_log "git fetch --verbose"
-        cd ${TMP_FOLDER} && exec_log "git reset --hard origin/${GIT_REPO}"
+        cd ${TMP_FOLDER} && exec_log "git reset --hard origin/${GIT_BRANCH}"
 
     else
 
