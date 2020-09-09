@@ -19,7 +19,7 @@ echo "{\"@timestamp\": \"$(date)\", \"exit_code\": \"${1}\", \"message\": \"${2}
 }
 
 function exec_log {
-        OUTPUT=$(${1} 2>&1)
+        OUTPUT=$(sh -c "${1}" 2>&1)
         EXIT=$?
         log "$EXIT" "$(echo $OUTPUT | tr '\n' '|'| sed 's/"/\\"/g')" "${1}"
 }
@@ -61,7 +61,7 @@ do
     then
 
 	log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace (directory ${TMP_FOLDER}/${GIT_FOLDER})"
-        exec_log "kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
+        exec_log "unset HTTP_PROXY; unset HTTPS_PROXY; unset http_proxy; unset https_proxy; kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
 
     else
 
