@@ -61,7 +61,7 @@ do
     then
 
 	log "0" "Applying '${GIT_REPO}' repo against '${TARGET_NAMESPACE}' namespace (directory ${TMP_FOLDER}/${GIT_FOLDER})"
-        exec_log "unset HTTP_PROXY; unset HTTPS_PROXY; unset http_proxy; unset https_proxy; kubectl apply ${KUBE_ATTRS} -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
+        exec_log "unset HTTP_PROXY; unset HTTPS_PROXY; unset http_proxy; unset https_proxy; kubectl apply ${KUBE_ATTRS} --record=false -R --filename=${TMP_FOLDER}/${GIT_FOLDER}"
 
     else
 
